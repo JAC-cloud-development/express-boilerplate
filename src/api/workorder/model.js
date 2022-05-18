@@ -3,7 +3,6 @@ import mongoose from 'mongoose'
 const workorderSchema = new mongoose.Schema({
     id: {
         type: Number,
-        
     },
     nome: {
         type: String,
