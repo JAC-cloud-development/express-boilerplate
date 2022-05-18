@@ -1,11 +1,15 @@
 import Workorder from '../models/workorder_model.js';
+import _ from 'lodash'
 
 async function GetAllWorkorder(req, res) {
     return res.json(await Workorder.find());
 }
 
 async function GetWorkorderById(req, res) {
-    var element = await Workorder.findOne({ _id: req.params.ObjectId });
+    var element = await Workorder.findOne({ _id: req.params.ObjectId }).populate("user_ID").populate("task_ID");
+    if(element){
+        element = _.omit(JSON.parse(JSON.stringify(element)), "user_ID.password")
+    }
     return element ? res.json(element) : res.status(404).send("No element found.");
 }
 
