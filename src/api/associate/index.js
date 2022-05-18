@@ -2,7 +2,7 @@ import { Router } from "express";
 import { validateJWT } from "../../services/jwt/index.js";
 import User from "../user/model.js";
 import WorkOrder from "../workOrder/model.js";
-import {verifyIfHavePermission} from "../user/permission/index.js";
+import {verifyIfHavePermission, verifyIfHavePermissionStandard} from "../user/permission/index.js";
 
 const router = new Router();
 
@@ -121,5 +121,25 @@ router.get("/work/:workid", validateJWT, async (req, res) => {
         return [];
     }
 });
+
+
+//un endpoint che se il token ha associato uno user di tipo "backend o frontend o admin"
+// gli restituisce tutte le commesse a cui è associato
+router.get("/", validateJWT, async (req, res) => {
+    try{
+        if(await verifyIfHavePermissionStandard(req.user.id)){
+            const foundWorkOfThatStandardUser = await WorkOrder.find({user: req.user.id});
+            return foundWorkOfThatStandardUser ? res.json(foundWorkOfThatStandardUser) : res.sendStatus(404);
+        }
+        else{
+            return res.sendStatus(401);
+        }
+    }
+    catch(e){
+        console.log({errorRemoveUsertoWork: e});
+        return [];
+    }
+});
+
 
 export default router;

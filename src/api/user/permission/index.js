@@ -6,6 +6,11 @@ export const verifyIfHavePermission = async (id) => {
     return !!foundUser.role.includes("Admin");
 }
 
+export const verifyIfHavePermissionStandard = async (id) => {
+    const foundUser = await User.findById(id);
+    return !!foundUser.role.includes("BackEnd");
+}
+
 export const doYouPartecipateToWork = async (userid, workid) => {
     const partecipate = await WorkOrder.findOne({_id:workid});
     if(partecipate){
