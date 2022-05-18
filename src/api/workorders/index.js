@@ -42,6 +42,9 @@ router.delete("/delete/:id", validateJWT, async function (request, response){
     try {
         const admin = await users.findOne({email: request.user.email});
         if (admin.role.includes("Admin")){
+            const user = await users.find({workorders: request.params.id});
+            user.map(async (u, i)=>{u.workorders.splice(i, 1); await u.save();});
+
             const workorder = await workorders.deleteOne({_id: request.params.id});
             return response.send(workorder);
         }else{

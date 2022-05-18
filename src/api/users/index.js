@@ -1,6 +1,7 @@
 import _ from 'lodash'
 import { Router } from 'express';
 import users from "./model.js";
+import workorders from "../workorders/model.js";
 import validateJWT from "../../services/jwt/index.js";
 
 const router = new Router();
@@ -62,6 +63,9 @@ router.delete("/delete/:id", validateJWT, async function (request, response){
     try {
         const admin = await users.findOne({email: request.user.email});
         if (admin.role.includes("Admin")){
+            const workorder = await workorders.find({users: request.params.id});
+            workorder.map(async (w, i)=>{w.users.splice(i, 1); await w.save();});
+
             const user = await users.deleteOne({_id: request.params.id},{password:0});
 
             return response.send(user);
