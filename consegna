@@ -1,0 +1,14 @@
+creare i seguenti endpoint x le entita utente e commessa
+-create
+-get all
+-get by id
+-delete
+-update
+
+creare gli endpoint specifici per
+-associare un utente a una commessa
+-associare una commessa a un utente
+-cancellare una commessa a un utente
+-cancellare un utente da una commessa
+
+le entita vanno su mongo
