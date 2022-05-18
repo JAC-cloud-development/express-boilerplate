@@ -58,13 +58,13 @@ async function DeleteUserByUsername(req, res) {
 
 //TODO
 async function ChangePassword(req, res){
-    const element = await Users.findOne({ username: req.params.username });
+    const element = await Users.findOne({ username: req.user.name });
     if(element){
-        element.set(req.body)
+        element.set({password: req.user.password})
         await element.save();
     }
     
     return element ? res.json(element) : res.status(404).send("No element found.");
 }
 
-export {GetAllUsers, GetUserById, PostNewUser, PutModifiedUserById, DeleteUserById, GetUserByUsername, DeleteUserByUsername, PutModifiedUserByUsername}
+export {GetAllUsers, GetUserById, PostNewUser, PutModifiedUserById, DeleteUserById, GetUserByUsername, DeleteUserByUsername, PutModifiedUserByUsername, ChangePassword}

@@ -1,5 +1,5 @@
 import Tasks from "../models/task_model.js"
-
+import { DeleteWorkorderByTaskId } from "./workorder_controller.js"
 //task: ID, name, description, status, expire_date, date_creation (automatic)
 
 async function GetAllTasks(req, res) {
@@ -18,6 +18,7 @@ async function PostNewTask(req, res) {
 
 async function DeleteTaskById(req, res) {
     const result = await Tasks.deleteOne({ _id: req.params.ObjectId });
+    DeleteWorkorderByTaskId(req.params.ObjectId);
     return result.deletedCount > 0 ? res.json(result) : res.status(404).send("No element found.");
 }
 

@@ -13,4 +13,9 @@ async function PostNewWorkorder(req, res) {
     return res.json(await Workorder.create({user_ID: req.body.ObjectIdUser, task_ID: req.body.ObjectIdTask}));
 }
 
-export { GetAllWorkorder, GetWorkorderById, PostNewWorkorder}
+async function DeleteWorkorderByTaskId(taskId) {
+    const result = await Workorder.deleteOne({ task_ID: taskId });
+    console.log(result.deletedCount > 0 ? result : "No element found.")
+}
+
+export { GetAllWorkorder, GetWorkorderById, PostNewWorkorder, DeleteWorkorderByTaskId}

@@ -2,7 +2,7 @@
 import { Router } from 'express';
 import { createHashPassword, login } from '../auth/login.js';
 import { controlObjectId } from "../../services/db/controlObjectId.js";
-import {GetAllUsers, GetUserById, GetUserByUsername, PostNewUser, PutModifiedUserById, PutModifiedUserByUsername, DeleteUserById, DeleteUserByUsername} from '../controllers/user_controller.js'
+import {GetAllUsers, GetUserById, GetUserByUsername, PostNewUser, PutModifiedUserById, PutModifiedUserByUsername, DeleteUserById, DeleteUserByUsername, ChangePassword} from '../controllers/user_controller.js'
 const router = new Router();
 
 router.get("/getAll/", GetAllUsers);
@@ -20,6 +20,8 @@ router.put("/putModifiedUserByUsername/:username", PutModifiedUserByUsername)
 router.delete("/deleteUserById/:ObjectId", controlObjectId, DeleteUserById);
 
 router.delete("/deleteUserByUsername/:username", DeleteUserByUsername);
+
+router.put("/changePassword/", createHashPassword, ChangePassword);
 
 router.post("/login/", login);
 
