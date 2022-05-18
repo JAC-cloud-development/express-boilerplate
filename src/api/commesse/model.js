@@ -11,7 +11,7 @@ const itemCommesse = new mongoose.Schema({
 
     personePreviste: {type: Number},
     personeEffettive: {type: Number},
-    idpersone: [{ type: mongoose.ObjectId }],
+    idPersone: [{ type: mongoose.ObjectId, ref: 'users' }],
 });
 
 export default mongoose.model('Commesse', itemCommesse);
