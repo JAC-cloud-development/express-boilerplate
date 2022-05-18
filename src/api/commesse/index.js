@@ -15,6 +15,7 @@ router.get("/:id", validateJWT, async function (request, response) {
 });
 
 router.post("/", validateJWT, async function (request, response) {
+  console.log(request.body);
   return response.json(await ItemsCommesse.create(request.body));
 });
 
