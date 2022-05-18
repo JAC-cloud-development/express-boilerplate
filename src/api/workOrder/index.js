@@ -1,6 +1,7 @@
 import { Router } from "express";
 import { validateJWT } from "../../services/jwt/index.js";
 import WorkOrder from "./model.js";
+import User from "../user/model.js";
 import {doYouPartecipateToWork, verifyIfHavePermission} from "../user/permission/index.js";
 
 const router = new Router();
@@ -17,7 +18,7 @@ router.get("/", validateJWT,async (req, res) => {
 
 //get work by id
 router.get("/:id", validateJWT, async (req, res) => {
-    if(await doYouPartecipateToWork(req.user.id, req.params.id)){
+    if(await doYouPartecipateToWork(req.user.id, req.params.id) || await verifyIfHavePermission(req.user.id)){
         const foundWork = await WorkOrder.findOne({ _id: req.params.id }).populate("user", "name email role");
         return foundWork ? res.json(foundWork) : res.sendStatus(404);
     }
@@ -57,6 +58,19 @@ router.put("/:id", validateJWT, async (req, res) => {
 router.delete("/:id", validateJWT, async (req, res) => {
 
     if(await verifyIfHavePermission(req.user.id)){
+
+        const userWhoPartecipateToWork = await User.find({workOrder:req.params.id});
+
+
+        userWhoPartecipateToWork.map((currentUser)=>{
+            const index = currentUser.workOrder.indexOf(req.params.id);
+            if (index > -1) {
+                currentUser.workOrder.splice(index, 1); // 2nd parameter means remove one item only
+            }
+            currentUser.save();
+        })
+
+
         const result = await WorkOrder.deleteOne({ _id: req.params.id });
         return result.deletedCount > 0 ? res.sendStatus(204) : res.sendStatus(404);
     }

@@ -1,7 +1,8 @@
 import { Router } from "express";
 import { validateJWT } from "../../services/jwt/index.js";
 import User from "./model.js";
-import {verifyIfHavePermission} from "./permission/index.js";
+import {doYouPartecipateToWork, verifyIfHavePermission} from "./permission/index.js";
+import WorkOrder from "../workOrder/model.js";
 
 const router = new Router();
 
@@ -37,6 +38,16 @@ router.put("/:id", validateJWT, async (req, res) => {
 
 //delete user by id
 router.delete("/:id", validateJWT, async (req, res) => {
+    const foundAllWorkWhoHaveYou = await WorkOrder.find({user:req.params.id});
+
+    foundAllWorkWhoHaveYou.user.map((currentwork)=>{
+        const index = currentwork.user.indexOf(req.params.id);
+        if (index > -1) {
+            currentwork.user.splice(index, 1); // 2nd parameter means remove one item only
+        }
+        currentwork.save();
+    })
+
     const result = await User.deleteOne({ _id: req.params.id });
     return result.deletedCount > 0 ? res.sendStatus(204) : res.sendStatus(404);
 });

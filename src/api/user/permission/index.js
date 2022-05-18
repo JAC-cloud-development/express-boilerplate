@@ -7,6 +7,11 @@ export const verifyIfHavePermission = async (id) => {
 }
 
 export const doYouPartecipateToWork = async (userid, workid) => {
-    const partecipate = await WorkOrder.findById(workid);
-    return !!partecipate.user.includes(userid);
+    const partecipate = await WorkOrder.findOne({_id:workid});
+    if(partecipate){
+        return !!partecipate.user.includes(userid);
+    }
+    else{
+        return res.sendStatus(404);
+    }
 }

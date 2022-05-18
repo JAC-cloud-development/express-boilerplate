@@ -8,7 +8,7 @@ const userSchema = mongoose.Schema({
     name: { type: String, maxLength: 30, required: true },
     email: { type: String, maxLength: 50, required: true },
     password: { type: String, required: true },
-    role:[{type:String, enum:["FrontEnd","BackEnd","TeamLeader","Graphic","Admin","ProductOwner"]}],
+    role:[{type:String, enum:["FrontEnd","BackEnd","Admin"]}],
     workOrder: [{ type: mongoose.Schema.Types.ObjectId, ref: "WorkOrder" }],
 },{timestamp:true});
 
