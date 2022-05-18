@@ -6,7 +6,11 @@ import validateJWT from '../../services/jwt/index.js'
 const router = new Router();
 
 router.get("/", validateJWT, async function (request, response) {
-  return response.json(await ItemsCommesse.find());
+  if(request.user.ruolo && request.user.ruolo=="admin"){
+    return response.json(await ItemsCommesse.find());
+  }else{
+    response.sendStatus(401);
+  }
 });
 
 router.get("/:id", validateJWT, async function (request, response) {

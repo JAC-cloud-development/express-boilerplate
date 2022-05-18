@@ -34,7 +34,7 @@ async function validateJWT(req, res, next){
         cercato2=_.omit(cercato2, ['_id', '__v']);*/
 
         //oppure
-        cercato2=_.pick(cercato2, ['username', 'password']);
+        cercato2=_.pick(cercato2, ['username', 'password', 'ruolo']);
         
         req.user= cercato2;
         next();

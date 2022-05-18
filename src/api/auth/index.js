@@ -1,6 +1,5 @@
 import _ from 'lodash'
 import { Router } from 'express';
-//import { db } from '../../services/db/fakedb.js'
 import usersmodel from "../../api/users/model.js";
 import jwt from "jsonwebtoken";   //va anche installata
 
