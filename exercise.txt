@@ -1,0 +1,21 @@
+
+1) Two entity
+user: ID, username, name, surname, role
+task: ID, name, description, expire_data
+
+2) Action per entity
+- create
+- get all
+- get by id
+- delete by id
+- update all
+
+3) endpoit required
+- associate user to task
+- associate task to user
+- delete task to user
+- delete user to task
+
+NB: data on MongoDB
+NB: use express, nodeJS, mongoose
+NB: git checkout -b marta_cereda_a1
