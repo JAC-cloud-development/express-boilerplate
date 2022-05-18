@@ -22,7 +22,7 @@ const userSchema = new mongoose.Schema({
     role: [{type: String,
          required: "role is required", 
          enum: ["Frontend", "Backend","teamLeader", "prodcutOwner", "Grafico","Admin","Manager"]}],
-    job: [{type: mongoose.ObjectId}]
+    workorders: [{type: mongoose.ObjectId, ref: "Workorder"}]
 }, {timestamps: true});
 
 userSchema.pre("save", function (next){

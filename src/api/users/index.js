@@ -37,11 +37,9 @@ router.post("/singup", async function (request, response) {
     }
   });
 
-  export default router;
-
 router.get("/all", validateJWT, async function (request, response){
     try {
-        const allUsersr = await users.find({},{password:0});
+        const allUsersr = await users.find({},{password:0}).populate("workorders");
         return response.send(allUsersr);
     } catch (error) {
         return response.sendStatus(406);
@@ -51,7 +49,7 @@ router.get("/all", validateJWT, async function (request, response){
 
 router.get("/:id", validateJWT, async function (request, response){
     try {
-        const user = await users.find({_id: request.params.id},{password:0});
+        const user = await users.findById(request.params.id,{password:0}).populate("workorders");;
         return response.send(user);
     } catch (error) {
         return response.sendStatus(406);
@@ -62,33 +60,36 @@ router.get("/:id", validateJWT, async function (request, response){
 router.delete("/delete/:id", validateJWT, async function (request, response){
 
     try {
-        const admin = users.findOne({email: request.user.email});
+        const admin = await users.findOne({email: request.user.email});
         if (admin.role.includes("Admin")){
             const user = await users.deleteOne({_id: request.params.id},{password:0});
+
             return response.send(user);
         }else{
             return response.sendStatus(408);
         }
     } catch (error) {
-        return response.status(406);
+        return response.sendStatus(406);
     }
     
 });
 
-router.patch("/update/:id", validateJWT, async function (request, response){
+router.put("/update/:id", validateJWT, async function (request, response){
 
     try {
-        const admin = users.findOne({email: request.user.email});
+        const admin = await users.findOne({email: request.user.email});
         if (admin.role.includes("Admin")){
-            const user = await users.findOne({_id: request.params.id});
+            const user = await users.findById(request.params.id);
             await user.set(request.body);
             await user.save();
-            return response.send(200);
+            return response.sendStatus(200);
         }else{
             return response.sendStatus(408);
         }
     } catch (error) {
-        return response.status(406);
-    }
+        return response.sendStatus(406);
+    }   
     
 });
+
+export default router;

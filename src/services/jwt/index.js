@@ -5,9 +5,9 @@ import 'dotenv/config';
 export default async function validateJWT(request, response, next) {
     try {
         const decoded = jwt.verify(request.headers.authorization.split(" ")[1], process.env.JWT_KEY);
-        console.log(decoded.user._id);
+        //console.log(decoded.user._id);
         const user = await users.findById(decoded.user._id);
-        console.log({ user });
+        //console.log({ user });
         if (user) {
             request.user = user;
             next();
