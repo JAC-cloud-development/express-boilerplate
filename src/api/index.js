@@ -6,7 +6,7 @@ import auth from './auth/index.js'
 
 const router = new Router();
 
-router.use('/items', commessa);
+router.use('/commessa', commessa);
 router.use('/users', users);
 router.use('/auth', auth);
 

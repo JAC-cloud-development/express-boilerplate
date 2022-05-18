@@ -1,22 +1,10 @@
+import mongoose from 'mongoose'
 
-import { Mongoose } from "mongoose";
-const commessaSchema = new mongoose.Schema({
-    nome: {
-        type: String,
-    },
-    utenti:{
-        type:Array
-    },
-    datainizio:{
-        type:String
-    },
-    datafine:{
-        type:String
-    }
+const itemSchema = new mongoose.Schema({
+    name: { type: String },
+    datainizio: { type: String },
+    utenti: { type: Array },
+    
 });
 
-
-
-
-
-export default mongoose.model('commessa', commessaSchema);
+export default mongoose.model('Item', itemSchema);
