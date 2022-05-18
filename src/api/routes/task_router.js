@@ -4,13 +4,15 @@ import { GetAllTasks, GetTaskById, PostNewTask, DeleteTaskById } from "../contro
 
 const router = new Router();
 
+//middleware for auth
+import { autenticateToken } from '../../services/jwt/index.js'
 
-router.get("/getAll/", GetAllTasks);
+router.get("/getAll/", autenticateToken, GetAllTasks);
 
-router.get("/getTaskById/:ObjectId", controlObjectId, GetTaskById);
+router.get("/getTaskById/:ObjectId", autenticateToken, controlObjectId, GetTaskById);
 
-router.post("/postNewTask/", PostNewTask);
+router.post("/postNewTask/", autenticateToken, PostNewTask);
 
-router.delete("/deleteTaskById/:ObjectId", controlObjectId, DeleteTaskById);
+router.delete("/deleteTaskById/:ObjectId", autenticateToken, controlObjectId, DeleteTaskById);
 
 export default router;

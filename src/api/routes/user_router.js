@@ -5,23 +5,26 @@ import { controlObjectId } from "../../services/db/controlObjectId.js";
 import {GetAllUsers, GetUserById, GetUserByUsername, PostNewUser, PutModifiedUserById, PutModifiedUserByUsername, DeleteUserById, DeleteUserByUsername, ChangePassword} from '../controllers/user_controller.js'
 const router = new Router();
 
-router.get("/getAll/", GetAllUsers);
+//middleware for auth
+import { autenticateToken } from '../../services/jwt/index.js'
 
-router.get("/getUserById/:ObjectId", controlObjectId, GetUserById);
+router.get("/getAll/", autenticateToken, GetAllUsers);
 
-router.get("/getUserByUsername/:username", GetUserByUsername);
+router.get("/getUserById/:ObjectId", autenticateToken, controlObjectId, GetUserById);
 
-router.post("/postNewUser/", createHashPassword, PostNewUser);
+router.get("/getUserByUsername/:username", autenticateToken, GetUserByUsername);
 
-router.put("/putModifiedUserById/:ObjectId", controlObjectId, PutModifiedUserById);
+router.post("/postNewUser/", autenticateToken, createHashPassword, PostNewUser);
 
-router.put("/putModifiedUserByUsername/:username", PutModifiedUserByUsername)
+router.put("/putModifiedUserById/:ObjectId", autenticateToken, controlObjectId, PutModifiedUserById);
 
-router.delete("/deleteUserById/:ObjectId", controlObjectId, DeleteUserById);
+router.put("/putModifiedUserByUsername/:username", autenticateToken, PutModifiedUserByUsername)
 
-router.delete("/deleteUserByUsername/:username", DeleteUserByUsername);
+router.delete("/deleteUserById/:ObjectId", autenticateToken, controlObjectId, DeleteUserById);
 
-router.put("/changePassword/", createHashPassword, ChangePassword);
+router.delete("/deleteUserByUsername/:username", autenticateToken, DeleteUserByUsername);
+
+router.put("/changePassword/", autenticateToken, createHashPassword, ChangePassword);
 
 router.post("/login/", login);
 
